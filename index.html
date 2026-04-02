@@ -8,7 +8,6 @@
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700;800&display=swap');
 
         :root {
-            /* Color Palette */
             --bg-body: #f8fafc;
             --bg-surface: #ffffff;
             --text-primary: #0f172a;
@@ -19,19 +18,18 @@
             --brand-gradient: linear-gradient(135deg, #1d4ed8 0%, #3b82f6 100%);
             --border-color: #e2e8f0;
             
-            /* Status Colors */
             --status-success: #10b981;
             --status-success-bg: #d1fae5;
             --status-error: #ef4444;
             --status-error-bg: #fee2e2;
             
-            /* Shadows & Radii */
             --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
             --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
             --shadow-hover: 0 12px 25px -5px rgba(37, 99, 235, 0.15), 0 8px 10px -6px rgba(37, 99, 235, 0.1);
-            --radius-md: 12px;
-            --radius-lg: 16px;
-            --radius-xl: 20px;
+            
+            --radius-md: 10px;
+            --radius-lg: 14px;
+            --radius-xl: 18px;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -46,225 +44,194 @@
 
         /* --- LOGIN OVERLAY --- */
         #loginOverlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(15, 23, 42, 0.85);
-            backdrop-filter: blur(10px);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
+            position: fixed; inset: 0; background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(10px); display: flex; justify-content: center;
+            align-items: center; z-index: 9999;
         }
         .login-box {
-            background: var(--bg-surface);
-            padding: 48px 40px;
-            border-radius: var(--radius-xl);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35);
-            width: 100%;
-            max-width: 420px;
-            text-align: center;
+            background: var(--bg-surface); padding: 40px 32px; border-radius: var(--radius-xl);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35); width: 100%; max-width: 380px; text-align: center;
         }
         .login-logo {
-            width: 56px; height: 56px;
-            background: var(--brand-gradient);
-            border-radius: 14px; margin: 0 auto 20px;
-            display: flex; align-items: center; justify-content: center;
-            color: white; font-size: 28px;
-            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
+            width: 48px; height: 48px; background: var(--brand-gradient);
+            border-radius: 12px; margin: 0 auto 16px; display: flex; align-items: center; 
+            justify-content: center; color: white; font-size: 24px; box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
         }
-        .login-box h2 {
-            font-size: 24px; font-weight: 800; margin-bottom: 6px;
-            letter-spacing: -0.5px; color: var(--text-primary);
-        }
-        .login-box p { color: var(--text-secondary); font-size: 14px; margin-bottom: 32px; }
+        .login-box h2 { font-size: 20px; font-weight: 800; margin-bottom: 4px; letter-spacing: -0.5px; }
+        .login-box p { color: var(--text-secondary); font-size: 13px; margin-bottom: 24px; }
         .input-group { margin-bottom: 16px; text-align: left; }
-        .input-group label {
-            display: block; font-size: 13px; font-weight: 600;
-            color: var(--text-secondary); margin-bottom: 8px;
-        }
+        .input-group label { display: block; font-size: 12px; font-weight: 600; color: var(--text-secondary); margin-bottom: 6px; }
         .login-box input {
-            width: 100%; padding: 14px 16px; border: 1px solid var(--border-color);
-            border-radius: 10px; font-size: 15px; font-family: inherit;
-            transition: all 0.2s ease; background: #f8fafc;
+            width: 100%; padding: 12px 14px; border: 1px solid var(--border-color);
+            border-radius: 8px; font-size: 14px; font-family: inherit; background: #f8fafc;
         }
-        .login-box input:focus {
-            outline: none; border-color: var(--brand-primary);
-            background: white; box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
-        }
+        .login-box input:focus { outline: none; border-color: var(--brand-primary); background: white; box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); }
         .login-box button {
-            width: 100%; padding: 14px; margin-top: 12px; font-size: 16px;
-            background: var(--brand-gradient); color: white;
-            border: none; border-radius: 10px; font-weight: 600;
-            cursor: pointer; transition: all 0.2s;
-            box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2);
+            width: 100%; padding: 12px; margin-top: 8px; font-size: 15px;
+            background: var(--brand-gradient); color: white; border: none; border-radius: 8px;
+            font-weight: 600; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2);
         }
-        .login-box button:hover { 
-            transform: translateY(-2px); 
-            box-shadow: 0 8px 15px -3px rgba(37, 99, 235, 0.3); 
-        }
+        .login-box button:hover { transform: translateY(-2px); box-shadow: 0 8px 15px -3px rgba(37, 99, 235, 0.3); }
         .error-msg {
-            color: var(--status-error); font-size: 13px; margin-top: 16px;
-            display: none; font-weight: 500; background: var(--status-error-bg);
-            padding: 10px; border-radius: 8px;
+            color: var(--status-error); font-size: 12px; margin-top: 16px; display: none;
+            font-weight: 500; background: var(--status-error-bg); padding: 8px; border-radius: 6px;
         }
 
-        /* --- DASHBOARD LAYOUT --- */
-        .wrapper { 
-            max-width: 1320px; 
-            margin: 0 auto; 
-            padding: 24px;
-            display: none; 
-        }
+        /* --- DASHBOARD WRAPPER --- */
+        .wrapper { max-width: 1400px; margin: 0 auto; padding: 20px; display: none; }
 
-        /* Header */
+        /* Top Nav */
         .top-nav {
             display: flex; justify-content: space-between; align-items: center;
-            background: var(--bg-surface); padding: 16px 24px;
-            border-radius: var(--radius-lg); box-shadow: var(--shadow-md);
-            border: 1px solid var(--border-color); margin-bottom: 20px;
+            background: var(--bg-surface); padding: 12px 20px; border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm); border: 1px solid var(--border-color); margin-bottom: 16px;
         }
-        .brand { display: flex; align-items: center; gap: 12px; }
+        .brand { display: flex; align-items: center; gap: 10px; }
         .brand-icon {
-            background: var(--brand-gradient); color: white;
-            width: 32px; height: 32px; border-radius: 8px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 16px; box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2);
+            background: var(--brand-gradient); color: white; width: 28px; height: 28px;
+            border-radius: 6px; display: flex; align-items: center; justify-content: center;
+            font-size: 14px; box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2);
         }
-        .brand h1 { font-size: 18px; font-weight: 800; letter-spacing: -0.5px; color: var(--text-primary); }
+        .brand h1 { font-size: 16px; font-weight: 800; letter-spacing: -0.5px; }
         
-        .nav-actions { display: flex; align-items: center; gap: 16px; }
-        
+        .nav-actions { display: flex; align-items: center; gap: 12px; }
         .logout-btn {
-            background: transparent; color: var(--text-secondary);
-            border: 1px solid var(--border-color); padding: 6px 12px;
-            border-radius: 6px; font-size: 13px; font-weight: 600;
+            background: transparent; color: var(--text-secondary); border: 1px solid var(--border-color);
+            padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 600;
             cursor: pointer; transition: all 0.2s; font-family: inherit;
         }
         .logout-btn:hover { background: #f1f5f9; color: var(--text-primary); }
 
-        /* Status Pill */
         .status-pill {
-            display: flex; align-items: center; gap: 8px;
-            padding: 6px 14px; border-radius: 20px; font-size: 12px;
-            font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;
-            border: 1px solid transparent;
+            display: flex; align-items: center; gap: 6px; padding: 6px 12px;
+            border-radius: 20px; font-size: 12px; font-weight: 700; text-transform: uppercase;
         }
-        .status-indicator { width: 8px; height: 8px; border-radius: 50%; }
-        .connected { background: var(--status-success-bg); color: #047857; border-color: #a7f3d0; }
+        .status-indicator { width: 6px; height: 6px; border-radius: 50%; }
+        .connected { background: var(--status-success-bg); color: #047857; }
         .connected .status-indicator { background: var(--status-success); animation: pulse 2s infinite; }
-        .disconnected { background: var(--status-error-bg); color: #b91c1c; border-color: #fecaca; }
+        .disconnected { background: var(--status-error-bg); color: #b91c1c; }
         .disconnected .status-indicator { background: var(--status-error); }
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); } 70% { box-shadow: 0 0 0 4px rgba(16, 185, 129, 0); } 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); } }
 
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
-            70% { box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
-        }
-
-        /* Metadata Banner */
+        /* Meta Banner */
         .meta-banner {
-            display: flex; gap: 32px; background: var(--bg-surface);
-            padding: 20px 24px; border-radius: var(--radius-lg);
-            border: 1px solid var(--border-color); margin-bottom: 24px;
-            box-shadow: var(--shadow-sm);
+            display: flex; gap: 24px; background: var(--bg-surface); padding: 16px 20px;
+            border-radius: var(--radius-lg); border: 1px solid var(--border-color); margin-bottom: 20px; box-shadow: var(--shadow-sm);
         }
-        .meta-group { display: flex; flex-direction: column; gap: 4px; }
-        .meta-label { font-size: 11px; font-weight: 700; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.5px; }
-        .meta-value { font-size: 15px; font-weight: 700; color: var(--text-primary); font-family: 'JetBrains Mono', monospace; }
-        .meta-device { color: var(--brand-primary); background: var(--brand-light); padding: 4px 10px; border-radius: 8px; border: 1px solid #bfdbfe; }
+        .meta-group { display: flex; flex-direction: column; gap: 2px; }
+        .meta-label { font-size: 10px; font-weight: 700; color: var(--text-tertiary); text-transform: uppercase; }
+        .meta-value { font-size: 13px; font-weight: 700; font-family: 'JetBrains Mono', monospace; }
+        .meta-device { color: var(--brand-primary); background: var(--brand-light); padding: 2px 8px; border-radius: 6px; border: 1px solid #bfdbfe; }
         .divider { width: 1px; background: var(--border-color); }
 
-        /* SENSOR GRID - COMPACT MODE */
-        .sensor-grid {
+        /* --- DASHBOARD GRID LAYOUT --- */
+        .dashboard-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-            gap: 16px;
+            grid-template-columns: 260px 1fr; /* Slimmer Left col for AQI */
+            gap: 16px; /* Tighter gap */
         }
 
-        /* SENSOR CARDS - COMPACT MODE */
+        /* AQI PANEL (LEFT) */
+        .aqi-panel {
+            grid-column: 1;
+            background: var(--bg-surface); border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg); padding: 24px 20px; box-shadow: var(--shadow-sm);
+            text-align: center; display: flex; flex-direction: column; justify-content: center;
+            transition: background 0.5s ease, border-color 0.5s ease;
+        }
+
+        .aqi-title {
+            font-size: 13px; font-weight: 800; color: var(--text-secondary);
+            text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 16px;
+        }
+
+        .aqi-gauge-container {
+            position: relative; width: 100%; max-width: 200px; height: 100px; margin: 0 auto 8px;
+        }
+        
+        .aqi-gauge { width: 100%; height: 100%; overflow: visible; }
+        .gauge-bg { fill: none; stroke: #e2e8f0; stroke-width: 10; stroke-linecap: round; }
+        .gauge-value { 
+            fill: none; stroke: var(--status-success); stroke-width: 10; 
+            stroke-linecap: round; transition: stroke-dashoffset 1s cubic-bezier(0.4, 0, 0.2, 1), stroke 0.5s; 
+            stroke-dasharray: 126; /* Arc length for r=40 */
+            stroke-dashoffset: 126; 
+        }
+
+        .aqi-readout {
+            position: absolute; bottom: -8px; left: 0; width: 100%; text-align: center;
+        }
+        .aqi-number { font-size: 46px; font-weight: 800; color: var(--text-primary); font-family: 'JetBrains Mono', monospace; line-height: 1; letter-spacing: -1.5px; }
+        .aqi-text { font-size: 14px; font-weight: 700; text-transform: uppercase; margin-top: 2px; letter-spacing: 0.5px; }
+
+        /* WATER PANEL (RIGHT) */
+        .water-panel { grid-column: 2; display: flex; flex-direction: column; }
+        
+        /* AIR PANEL (BOTTOM) */
+        .air-panel { grid-column: 1 / -1; margin-top: 4px; }
+
+        .section-title {
+            font-size: 15px; font-weight: 800; color: var(--text-primary);
+            margin-bottom: 12px; display: flex; align-items: center; gap: 8px;
+        }
+        .section-title span { background: var(--bg-surface); padding: 4px; border-radius: 6px; border: 1px solid var(--border-color); box-shadow: var(--shadow-sm); display: flex; font-size: 14px;}
+
+        /* SENSOR GRIDS */
+        .water-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; height: 100%; }
+        .air-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 12px; }
+
+        /* SENSOR CARDS (COMPACTED) */
         .card {
-            background: var(--bg-surface);
-            border: 1px solid var(--border-color);
-            border-radius: var(--radius-md);
-            padding: 16px;
-            box-shadow: var(--shadow-sm);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            min-height: 120px;
-            position: relative;
+            background: var(--bg-surface); border: 1px solid var(--border-color);
+            border-radius: var(--radius-md); padding: 14px; box-shadow: var(--shadow-sm);
+            transition: all 0.2s ease-in-out; display: flex;
+            flex-direction: column; justify-content: space-between; position: relative;
         }
+        .card:hover { transform: translateY(-2px); box-shadow: var(--shadow-hover); border-color: #93c5fd; }
         
-        .card:hover {
-            transform: translateY(-3px);
-            box-shadow: var(--shadow-hover);
-            border-color: #93c5fd;
-        }
-
-        /* Dynamic AQI Backgrounds */
-        .aqi-good { background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%); border-color: #86efac; }
-        .aqi-moderate { background: linear-gradient(135deg, #fefce8 0%, #ffffff 100%); border-color: #fde047; }
-        .aqi-unhealthy-sensitive { background: linear-gradient(135deg, #fff7ed 0%, #ffffff 100%); border-color: #fdba74; }
-        .aqi-unhealthy { background: linear-gradient(135deg, #fef2f2 0%, #ffffff 100%); border-color: #fca5a5; }
-        .aqi-very-unhealthy { background: linear-gradient(135deg, #faf5ff 0%, #ffffff 100%); border-color: #d8b4fe; }
-        .aqi-hazardous { background: linear-gradient(135deg, #fff1f2 0%, #ffffff 100%); border-color: #fda4af; }
-
         .card-live-dot {
-            position: absolute;
-            top: 12px; right: 12px;
-            width: 6px; height: 6px;
+            position: absolute; top: 10px; right: 10px; width: 6px; height: 6px;
             border-radius: 50%; background: var(--status-success);
-            box-shadow: 0 0 6px rgba(16, 185, 129, 0.6);
-            animation: pulse 2.5s infinite;
+            box-shadow: 0 0 6px rgba(16, 185, 129, 0.6); animation: pulse 2.5s infinite;
         }
-
-        .card-header { display: flex; align-items: flex-start; gap: 12px; }
         
+        .card-header { display: flex; align-items: flex-start; gap: 10px; }
         .icon-box {
-            width: 36px; height: 36px;
-            background: var(--brand-light); border-radius: 8px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 18px; flex-shrink: 0; color: var(--brand-primary);
+            width: 32px; height: 32px; background: var(--brand-light); border-radius: 6px;
+            display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; color: var(--brand-primary);
         }
-        
         .card-title-group { display: flex; flex-direction: column; gap: 1px; margin-top: 1px; }
-        .card-title { font-size: 13px; font-weight: 700; color: var(--text-secondary); line-height: 1.2; }
-        .card-key {
-            font-size: 11px; font-weight: 600; color: var(--text-tertiary);
-            font-family: 'JetBrains Mono', monospace;
-        }
+        .card-title { font-size: 12px; font-weight: 700; color: var(--text-secondary); line-height: 1.1;}
+        .card-key { font-size: 10px; font-weight: 600; color: var(--text-tertiary); font-family: 'JetBrains Mono', monospace; }
+        
+        .card-value-wrap { margin-top: 12px; display: flex; align-items: baseline; gap: 4px; }
+        .card-value { font-size: 22px; font-weight: 800; color: var(--text-primary); font-family: 'JetBrains Mono', monospace; letter-spacing: -0.5px; line-height: 1; }
+        .card-unit { font-size: 11px; font-weight: 600; color: var(--text-tertiary); }
 
-        .card-value-wrap {
-            margin-top: 16px; display: flex; align-items: baseline; gap: 6px;
-        }
-        .card-value {
-            font-size: 26px; font-weight: 800; color: var(--text-primary);
-            font-family: 'JetBrains Mono', monospace; letter-spacing: -0.5px; line-height: 1;
-        }
-        .card-unit { font-size: 13px; font-weight: 600; color: var(--text-tertiary); }
-
-        /* Empty State */
+        /* Empty State Loader */
         .empty-state {
-            grid-column: 1 / -1; text-align: center; padding: 80px 20px;
-            background: var(--bg-surface); border-radius: var(--radius-lg);
+            text-align: center; padding: 60px 20px; background: var(--bg-surface); border-radius: var(--radius-lg);
             border: 2px dashed var(--border-color); color: var(--text-secondary);
         }
-        .empty-state h3 { color: var(--text-primary); margin-bottom: 8px; font-size: 18px; font-weight: 700; }
         .spinner {
             width: 36px; height: 36px; border: 3px solid var(--border-color);
             border-top-color: var(--brand-primary); border-radius: 50%;
-            animation: spin 1s linear infinite; margin: 0 auto 20px;
+            animation: spin 1s linear infinite; margin: 0 auto 16px;
         }
         @keyframes spin { to { transform: rotate(360deg); } }
 
         /* Responsive */
+        @media (max-width: 1024px) {
+            .dashboard-grid { grid-template-columns: 1fr; }
+            .aqi-panel, .water-panel, .air-panel { grid-column: 1; }
+            .water-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
+            .aqi-gauge-container { max-width: 240px; height: 120px; }
+        }
         @media (max-width: 768px) {
-            .meta-banner { flex-direction: column; gap: 16px; }
+            .meta-banner { flex-direction: column; gap: 12px; padding: 16px; }
             .divider { display: none; }
-            .top-nav { flex-direction: column; gap: 16px; align-items: flex-start; }
+            .top-nav { flex-direction: column; gap: 12px; align-items: flex-start; }
             .nav-actions { width: 100%; justify-content: space-between; }
-            .sensor-grid { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); }
         }
     </style>
 </head>
@@ -275,17 +242,8 @@
         <div class="login-logo">⚡</div>
         <h2>Carbelim Lab Monitoring</h2>
         <p>Enterprise Telemetry Portal</p>
-        
-        <div class="input-group">
-            <label for="loginUser">Username</label>
-            <input type="text" id="loginUser" placeholder="Enter your username" autocomplete="off">
-        </div>
-        
-        <div class="input-group">
-            <label for="loginPass">Password</label>
-            <input type="password" id="loginPass" placeholder="••••••••" autocomplete="off">
-        </div>
-        
+        <div class="input-group"><label>Username</label><input type="text" id="loginUser" autocomplete="off"></div>
+        <div class="input-group"><label>Password</label><input type="password" id="loginPass" autocomplete="off"></div>
         <button onclick="attemptLogin()">Secure Login</button>
         <div id="loginError" class="error-msg">Invalid Credentials. Please try again.</div>
     </div>
@@ -294,55 +252,65 @@
 <div class="wrapper" id="mainDashboard">
     
     <header class="top-nav">
-        <div class="brand">
-            <div class="brand-icon">⚡</div>
-            <h1>Carbelim Lab Monitoring</h1>
-        </div>
+        <div class="brand"><div class="brand-icon">⚡</div><h1>Carbelim Lab Monitoring</h1></div>
         <div class="nav-actions">
-            <div id="statusPill" class="status-pill disconnected">
-                <div class="status-indicator"></div>
-                <span id="statusText">Offline</span>
-            </div>
+            <div id="statusPill" class="status-pill disconnected"><div class="status-indicator"></div><span id="statusText">Offline</span></div>
             <button class="logout-btn" onclick="logout()">Sign Out</button>
         </div>
     </header>
 
     <div class="meta-banner">
-        <div class="meta-group">
-            <span class="meta-label">Target Device</span>
-            <span class="meta-value meta-device" id="meta-device">BTTE1250007</span>
-        </div>
+        <div class="meta-group"><span class="meta-label">Target Device</span><span class="meta-value meta-device" id="meta-device">BTTE1250007</span></div>
         <div class="divider"></div>
-        <div class="meta-group">
-            <span class="meta-label">Last Packet Date</span>
-            <span class="meta-value" id="meta-date">Awaiting Signal...</span>
-        </div>
+        <div class="meta-group"><span class="meta-label">Last Packet Date</span><span class="meta-value" id="meta-date">Awaiting Signal...</span></div>
         <div class="divider"></div>
-        <div class="meta-group">
-            <span class="meta-label">Last Packet Time</span>
-            <span class="meta-value" id="meta-time">--:--:--</span>
-        </div>
+        <div class="meta-group"><span class="meta-label">Last Packet Time</span><span class="meta-value" id="meta-time">--:--:--</span></div>
     </div>
 
-    <div class="sensor-grid" id="sensorGrid">
-        <div class="empty-state" id="gridPlaceholder">
-            <div class="spinner"></div>
-            <h3>Establishing Secure Connection</h3>
-            <p>Waiting for the first telemetry packet from device BTTE1250007.</p>
-        </div>
+    <div id="loadingState" class="empty-state">
+        <div class="spinner"></div>
+        <h3 style="color: var(--text-primary); margin-bottom: 6px; font-size: 16px; font-weight: 800;">Establishing Secure Connection</h3>
+        <p style="font-size: 13px;">Waiting for the first telemetry packet from device BTTE1250007.</p>
     </div>
 
+    <div id="dataContainers" class="dashboard-grid" style="display: none;">
+        
+        <div class="aqi-panel" id="aqiPanel">
+            <div class="aqi-title">Air Quality Index</div>
+            <div class="aqi-gauge-container">
+                <svg viewBox="0 0 100 50" class="aqi-gauge">
+                    <path class="gauge-bg" d="M 10 50 A 40 40 0 0 1 90 50"></path>
+                    <path class="gauge-value" id="aqiArc" d="M 10 50 A 40 40 0 0 1 90 50"></path>
+                </svg>
+                <div class="aqi-readout">
+                    <div class="aqi-number" id="aqiValueDisplay">--</div>
+                    <div class="aqi-text" id="aqiTextDisplay" style="color: var(--text-tertiary);">Calculating</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="water-panel">
+            <div class="section-title"><span>💧</span> Water Quality Analysis</div>
+            <div class="water-grid" id="waterGrid"></div>
+        </div>
+
+        <div class="air-panel">
+            <div class="section-title"><span>🌬️</span> Environment & Gases</div>
+            <div class="air-grid" id="airGrid"></div>
+        </div>
+
+    </div>
 </div>
 
 <script>
-    // --- Constants & Config ---
     const WS_URL = 'wss://ztw46d04q3.execute-api.us-east-1.amazonaws.com/production';
     const TARGET_DEVICE = 'BTTE1250007';
     const SESSION_KEY = 'carbelim_enterprise_session';
-    const SESSION_DAYS = 7;
+
+    const WATER_KEYS = ['d1', 'd2', 'd3'];
+    const AIR_KEYS = ['d4', 'd5', 'd6', 'd7', 'd8', 'd9', 'd10', 'd11', 'd12', 'd13', 'd14'];
 
     const SENSOR_MAP = {
-        'aqi': { name: 'Air Quality Index', icon: '🌍', scale: 1, unit: 'Index' }, 
         'd1':  { name: 'Turbidity',   icon: '💧', scale: 10,   unit: 'NTU' },
         'd2':  { name: 'pH Level',    icon: '🧪', scale: 100,  unit: '' },
         'd3':  { name: 'TDS',         icon: '🧂', scale: 10,   unit: 'ppm' },
@@ -362,225 +330,133 @@
     let ws = null;
     let reconnectInterval = null;
 
-    // --- Authentication & Session ---
-    window.onload = function() {
-        checkSession();
-    };
-
+    // --- Authentication ---
+    window.onload = function() { checkSession(); };
     function checkSession() {
         const sessionData = localStorage.getItem(SESSION_KEY);
-        if (sessionData) {
-            const session = JSON.parse(sessionData);
-            if (session.expiry > Date.now()) {
-                showDashboard();
-                return;
-            }
-        }
+        if (sessionData && JSON.parse(sessionData).expiry > Date.now()) { showDashboard(); return; }
         document.getElementById('loginOverlay').style.display = 'flex';
-        document.getElementById('mainDashboard').style.display = 'none';
     }
-
     function attemptLogin() {
-        const user = document.getElementById('loginUser').value;
-        const pass = document.getElementById('loginPass').value;
-        const err = document.getElementById('loginError');
-
-        if (user === 'CarbelimLab' && pass === 'CarbelimLab123') {
-            err.style.display = 'none';
-            const expiry = Date.now() + (SESSION_DAYS * 24 * 60 * 60 * 1000);
-            localStorage.setItem(SESSION_KEY, JSON.stringify({ expiry: expiry }));
+        if (document.getElementById('loginUser').value === 'CarbelimLab' && document.getElementById('loginPass').value === 'CarbelimLab123') {
+            document.getElementById('loginError').style.display = 'none';
+            localStorage.setItem(SESSION_KEY, JSON.stringify({ expiry: Date.now() + (7 * 24 * 60 * 60 * 1000) }));
             showDashboard();
-        } else {
-            err.style.display = 'block';
-        }
+        } else { document.getElementById('loginError').style.display = 'block'; }
     }
-
-    document.getElementById('loginPass').addEventListener('keypress', function (e) {
-        if (e.key === 'Enter') attemptLogin();
-    });
-
+    document.getElementById('loginPass').addEventListener('keypress', e => { if (e.key === 'Enter') attemptLogin(); });
     function logout() {
         localStorage.removeItem(SESSION_KEY);
-        if (ws) {
-            ws.onclose = null; 
-            ws.close();
-            ws = null;
-        }
+        if (ws) { ws.onclose = null; ws.close(); ws = null; }
         updateStatus('Offline', 'disconnected');
         document.getElementById('mainDashboard').style.display = 'none';
         document.getElementById('loginOverlay').style.display = 'flex';
         document.getElementById('loginPass').value = '';
     }
 
+    // --- WebSocket ---
     function showDashboard() {
         document.getElementById('loginOverlay').style.display = 'none';
         document.getElementById('mainDashboard').style.display = 'block';
         connectWebSocket();
     }
-
-    // --- WebSocket Engine ---
     function connectWebSocket() {
         if (ws && ws.readyState === WebSocket.OPEN) return;
-        
         ws = new WebSocket(WS_URL);
-
         ws.onopen = () => { 
             updateStatus('Live', 'connected'); 
             ws.send(JSON.stringify({ action: 'subscribe', deviceId: TARGET_DEVICE }));
             if(reconnectInterval) clearInterval(reconnectInterval);
         };
-        
-        ws.onclose = () => { 
-            updateStatus('Reconnecting...', 'disconnected'); 
-            if(!reconnectInterval) reconnectInterval = setInterval(connectWebSocket, 5000);
+        ws.onclose = () => { updateStatus('Reconnecting...', 'disconnected'); if(!reconnectInterval) reconnectInterval = setInterval(connectWebSocket, 5000); };
+        ws.onerror = () => { updateStatus('Error', 'disconnected'); };
+        ws.onmessage = (e) => {
+            try {
+                let parsed = JSON.parse(e.data);
+                let data = parsed.type === 'deviceData' ? parsed.data : (parsed.data || parsed);
+                if (data && typeof data === 'object') renderData(data);
+            } catch(err) {}
         };
-        
-        ws.onerror = (e) => { 
-            updateStatus('Error', 'disconnected'); 
-        };
-        
-        ws.onmessage = (e) => handleMessage(e.data);
     }
-
     function updateStatus(text, state) {
-        const pill = document.getElementById('statusPill');
-        const span = document.getElementById('statusText');
-        span.textContent = text;
-        pill.className = `status-pill ${state}`;
+        document.getElementById('statusText').textContent = text;
+        document.getElementById('statusPill').className = `status-pill ${state}`;
     }
 
-    function handleMessage(raw) {
-        try {
-            const parsed = JSON.parse(raw);
-            let data = null;
-            
-            if (parsed.type === 'deviceData' && parsed.data) data = parsed.data;
-            else if (parsed.data) data = parsed.data;
-            else data = parsed; 
-
-            if (data && typeof data === 'object') {
-                renderData(data);
-            }
-        } catch (e) { /* Ignore non-JSON */ }
-    }
-
-    // --- AQI Calculation Engine ---
+    // --- AQI Engine ---
     function calculateAQI(pm25, pm10) {
-        function calcIndex(Cp, breakpoints) {
+        function calcIndex(Cp, bp) {
             if (Cp === undefined || isNaN(Cp)) return 0;
-            for (let i = 0; i < breakpoints.length; i++) {
-                let bp = breakpoints[i];
-                if (Cp >= bp.cLow && Cp <= bp.cHigh) {
-                    return Math.round(((bp.iHigh - bp.iLow) / (bp.cHigh - bp.cLow)) * (Cp - bp.cLow) + bp.iLow);
+            for (let i = 0; i < bp.length; i++) {
+                if (Cp >= bp[i].cLow && Cp <= bp[i].cHigh) {
+                    return Math.round(((bp[i].iHigh - bp[i].iLow) / (bp[i].cHigh - bp[i].cLow)) * (Cp - bp[i].cLow) + bp[i].iLow);
                 }
             }
-            let maxBp = breakpoints[breakpoints.length - 1];
-            if(Cp > maxBp.cHigh) {
-                return Math.round(((maxBp.iHigh - maxBp.iLow) / (maxBp.cHigh - maxBp.cLow)) * (Cp - maxBp.cLow) + maxBp.iLow);
-            }
+            let max = bp[bp.length - 1];
+            if(Cp > max.cHigh) return Math.round(((max.iHigh - max.iLow) / (max.cHigh - max.cLow)) * (Cp - max.cLow) + max.iLow);
             return 0;
         }
-
-        const pm25_bp = [
-            { cLow: 0.0, cHigh: 12.0, iLow: 0, iHigh: 50 },
-            { cLow: 12.1, cHigh: 35.4, iLow: 51, iHigh: 100 },
-            { cLow: 35.5, cHigh: 55.4, iLow: 101, iHigh: 150 },
-            { cLow: 55.5, cHigh: 150.4, iLow: 151, iHigh: 200 },
-            { cLow: 150.5, cHigh: 250.4, iLow: 201, iHigh: 300 },
-            { cLow: 250.5, cHigh: 500.4, iLow: 301, iHigh: 500 }
-        ];
-
-        const pm10_bp = [
-            { cLow: 0, cHigh: 54, iLow: 0, iHigh: 50 },
-            { cLow: 55, cHigh: 154, iLow: 51, iHigh: 100 },
-            { cLow: 155, cHigh: 254, iLow: 101, iHigh: 150 },
-            { cLow: 255, cHigh: 354, iLow: 151, iHigh: 200 },
-            { cLow: 355, cHigh: 424, iLow: 201, iHigh: 300 },
-            { cLow: 425, cHigh: 604, iLow: 301, iHigh: 500 }
-        ];
-
-        let aqi25 = calcIndex(pm25, pm25_bp);
-        let aqi10 = calcIndex(pm10, pm10_bp);
-        
-        return Math.max(aqi25, aqi10);
+        const pm25_bp = [ {cLow:0, cHigh:12, iLow:0, iHigh:50}, {cLow:12.1, cHigh:35.4, iLow:51, iHigh:100}, {cLow:35.5, cHigh:55.4, iLow:101, iHigh:150}, {cLow:55.5, cHigh:150.4, iLow:151, iHigh:200}, {cLow:150.5, cHigh:250.4, iLow:201, iHigh:300}, {cLow:250.5, cHigh:500.4, iLow:301, iHigh:500} ];
+        const pm10_bp = [ {cLow:0, cHigh:54, iLow:0, iHigh:50}, {cLow:55, cHigh:154, iLow:51, iHigh:100}, {cLow:155, cHigh:254, iLow:101, iHigh:150}, {cLow:255, cHigh:354, iLow:151, iHigh:200}, {cLow:355, cHigh:424, iLow:201, iHigh:300}, {cLow:425, cHigh:604, iLow:301, iHigh:500} ];
+        return Math.max(calcIndex(pm25, pm25_bp), calcIndex(pm10, pm10_bp));
     }
 
-    function getAQIClass(aqi) {
-        if (aqi <= 50) return 'aqi-good';
-        if (aqi <= 100) return 'aqi-moderate';
-        if (aqi <= 150) return 'aqi-unhealthy-sensitive';
-        if (aqi <= 200) return 'aqi-unhealthy';
-        if (aqi <= 300) return 'aqi-very-unhealthy';
-        return 'aqi-hazardous';
-    }
-    
-    function getAQICategoryLabel(aqi) {
-        if (aqi <= 50) return 'Good';
-        if (aqi <= 100) return 'Moderate';
-        if (aqi <= 150) return 'Sensitive';
-        if (aqi <= 200) return 'Unhealthy';
-        if (aqi <= 300) return 'Very Unhealthy';
-        return 'Hazardous';
+    function getAQIMeta(aqi) {
+        if (aqi <= 50) return { text: 'Good', color: '#10b981', bg: '#f0fdf4', border: '#a7f3d0' }; 
+        if (aqi <= 100) return { text: 'Moderate', color: '#eab308', bg: '#fefce8', border: '#fef08a' }; 
+        if (aqi <= 150) return { text: 'Sensitive', color: '#f97316', bg: '#fff7ed', border: '#fed7aa' }; 
+        if (aqi <= 200) return { text: 'Unhealthy', color: '#ef4444', bg: '#fef2f2', border: '#fecaca' }; 
+        if (aqi <= 300) return { text: 'Very Unhealthy', color: '#a855f7', bg: '#faf5ff', border: '#e9d5ff' }; 
+        return { text: 'Hazardous', color: '#9f1239', bg: '#fff1f2', border: '#fecdd3' }; 
     }
 
-    // --- Core Render Logic ---
+    // --- Rendering ---
     function renderData(data) {
-        const rawDateStr = data.date || ""; 
-        let displayDate = document.getElementById('meta-date').textContent;
-        let displayTime = document.getElementById('meta-time').textContent;
-
-        if (rawDateStr.includes(',')) {
-            const parts = rawDateStr.split(',');
-            displayDate = parts[0];
-            displayTime = parts[1];
-        } else if (rawDateStr) {
-            displayDate = rawDateStr;
+        if(data.date) {
+            let parts = data.date.includes(',') ? data.date.split(',') : [data.date, '--:--:--'];
+            document.getElementById('meta-date').textContent = parts[0];
+            document.getElementById('meta-time').textContent = parts[1];
         }
 
-        document.getElementById('meta-date').textContent = displayDate;
-        document.getElementById('meta-time').textContent = displayTime;
+        document.getElementById('loadingState').style.display = 'none';
+        
+        // Use flex/grid display to reveal the layout
+        document.getElementById('dataContainers').style.display = 'grid';
 
-        if (data['d5'] !== undefined || data['d6'] !== undefined) {
-            let pm25 = data['d5'] ? Number(data['d5']) / SENSOR_MAP['d5'].scale : 0;
-            let pm10 = data['d6'] ? Number(data['d6']) / SENSOR_MAP['d6'].scale : 0;
-            data['aqi'] = calculateAQI(pm25, pm10);
-        }
+        // AQI Logic
+        let pm25 = data['d5'] ? Number(data['d5']) / SENSOR_MAP['d5'].scale : 0;
+        let pm10 = data['d6'] ? Number(data['d6']) / SENSOR_MAP['d6'].scale : 0;
+        let aqi = calculateAQI(pm25, pm10);
+        
+        let meta = getAQIMeta(aqi);
+        document.getElementById('aqiValueDisplay').textContent = aqi;
+        document.getElementById('aqiValueDisplay').style.color = meta.color;
+        document.getElementById('aqiTextDisplay').textContent = meta.text;
+        document.getElementById('aqiTextDisplay').style.color = meta.color;
+        
+        let panel = document.getElementById('aqiPanel');
+        panel.style.background = `linear-gradient(180deg, ${meta.bg} 0%, #ffffff 100%)`;
+        panel.style.borderColor = meta.border;
 
-        const grid = document.getElementById('sensorGrid');
-        const placeholder = document.getElementById('gridPlaceholder');
-        if (placeholder) placeholder.remove();
+        let arcOffset = 126 - (Math.min(aqi / 500, 1) * 126);
+        let arcElement = document.getElementById('aqiArc');
+        arcElement.style.strokeDashoffset = arcOffset;
+        arcElement.style.stroke = meta.color;
 
+        // Render Cards into Grids
         Object.keys(SENSOR_MAP).forEach(key => {
             if (data[key] !== undefined && data[key] !== null) {
                 const config = SENSOR_MAP[key];
                 const rawValue = Number(data[key]);
-                let finalValue = "Err";
-                
-                if (!isNaN(rawValue)) {
-                    finalValue = key === 'aqi' ? rawValue : parseFloat((rawValue / config.scale).toFixed(3));
-                }
+                let finalValue = isNaN(rawValue) ? "Err" : parseFloat((rawValue / config.scale).toFixed(3));
 
-                const cardId = `card-${key}`;
+                let cardId = `card-${key}`;
                 let card = document.getElementById(cardId);
                 
-                let extraClasses = "";
-                let unitDisplay = config.unit;
-                
-                if (key === 'aqi' && !isNaN(rawValue)) {
-                    extraClasses = getAQIClass(rawValue);
-                    unitDisplay = getAQICategoryLabel(rawValue); 
-                }
-
                 if (!card) {
                     card = document.createElement('div');
-                    card.className = `card ${extraClasses}`;
+                    card.className = `card`;
                     card.id = cardId;
-                    
-                    if(key === 'aqi') {
-                        card.style.order = "-1";
-                        card.style.borderWidth = "2px";
-                    }
-
                     card.innerHTML = `
                         <div class="card-live-dot" title="Sensor Active"></div>
                         <div class="card-header">
@@ -592,14 +468,14 @@
                         </div>
                         <div class="card-value-wrap">
                             <span class="card-value">${finalValue}</span>
-                            <span class="card-unit">${unitDisplay}</span>
+                            <span class="card-unit">${config.unit}</span>
                         </div>
                     `;
-                    grid.appendChild(card);
+                    
+                    if(WATER_KEYS.includes(key)) document.getElementById('waterGrid').appendChild(card);
+                    else if(AIR_KEYS.includes(key)) document.getElementById('airGrid').appendChild(card);
                 } else {
-                    card.className = `card ${extraClasses}`;
                     card.querySelector('.card-value').textContent = finalValue;
-                    if(key === 'aqi') card.querySelector('.card-unit').textContent = unitDisplay;
                 }
             }
         });
