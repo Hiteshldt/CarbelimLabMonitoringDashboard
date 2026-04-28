@@ -1,8 +1,8 @@
 #include <Wire.h>
 
-// ================= UART =================
-HardwareSerial ZphsSerial(PA10, PA9);   // Air sensor
-HardwareSerial EspSerial (PC7,  PC6);   // ESP32
+// ================= UART (Fixed Pins for STM32duino) =================
+HardwareSerial ZphsSerial(PA_10, PA_9);   // Air sensor
+HardwareSerial EspSerial (PC_7,  PC_6);   // ESP32
 
 // ================= PINS =================
 #define TURBIDITY_PIN  A2
@@ -14,18 +14,16 @@ HardwareSerial EspSerial (PC7,  PC6);   // ESP32
 #define ADC_RES         4095.0f
 #define SAMPLES         10
 #define DIVIDER_SCALE   1.5f
-#define PH_NEUTRAL_V    1.65f
-#define PH_SLOPE       -0.18f
 
 #define ZPHS_BAUD       9600
 #define ZPHS_RESP_LEN   26
 
 const byte ZPHS_CMD[9] = {0xFF,0x01,0x86,0,0,0,0,0,0x79};
 
-// ================= TIMING =================
-#define SENSOR_INTERVAL   500    // faster reading
-#define PUBLISH_INTERVAL  1000   // send every 1 sec
-#define AIR_REQ_INTERVAL  2000   // request air sensor
+// ================= TIMING (Relaxed 2-Second Update) =================
+#define SENSOR_INTERVAL   500    // Read analog sensors every 0.5 seconds
+#define PUBLISH_INTERVAL  2000   // Send to ESP32 every 2.0 seconds
+#define AIR_REQ_INTERVAL  1000   // Request air sensor every 1.0 seconds
 
 unsigned long lastSensor = 0;
 unsigned long lastSend   = 0;
@@ -54,33 +52,28 @@ float readAvgVoltage(int pin, bool divider=false) {
   return divider ? v * DIVIDER_SCALE : v;
 }
 
+// ── CUSTOM TURBIDITY (Raw Voltage * 100) ──────────────
 float readTurbidity() {
-  // 1. Read the raw voltage from the sensor
   float v = readAvgVoltage(TURBIDITY_PIN, false); 
-
-  // 2. Your custom calibration values
-  float voltClean = 1.5f;    // Voltage in completely clear water (0 NTU)
-  float voltDirty = 2.5f;    // Voltage when completely blocked (Max NTU)
-  float maxNTU    = 3000.0f; // The standard maximum NTU scale for these sensors
-
-  // 3. Failsafes: Keep the reading within bounds
-  // If the voltage drops below 1.5V (e.g., 1.45V), just call it 0 NTU
-  if (v <= voltClean) return 0.0f; 
-  
-  // If the voltage goes above 2.5V (e.g., 2.6V), cap it at 3000 NTU
-  if (v >= voltDirty) return maxNTU;
-
-  // 4. The Calibration Math (Linear Mapping)
-  float ntu = ((v - voltClean) / (voltDirty - voltClean)) * maxNTU;
-  
-  return safeF(ntu);
+  return safeF(v * 100.0f);
 }
 
+// ── CUSTOM pH CALIBRATION (Piecewise Linear) ──────────
 float readPH() {
-  float v = readAvgVoltage(PH_PIN);
-  return safeF(7.0f + (v - PH_NEUTRAL_V) / PH_SLOPE);
+  float v = readAvgVoltage(PH_PIN, false);
+  float ph = 7.0f;
+
+  if (v <= 1.92f) {
+    // Map between 1.71V (4.0 pH) and 1.92V (7.0 pH)
+    ph = 7.0f - ((1.92f - v) / 0.21f) * 3.0f;
+  } else {
+    // Map between 1.92V (7.0 pH) and 2.10V (9.25 pH)
+    ph = 7.0f + ((v - 1.92f) / 0.18f) * 2.25f;
+  }
+  return safeF(ph);
 }
 
+// ── TDS CALIBRATION ───────────────────────────────────
 float readTDS() {
   float v = readAvgVoltage(TDS_PIN);
   float coeff = 1.0f + 0.02f*(ambientTemp - 25.0f);
@@ -136,36 +129,38 @@ void printData() {
   Serial.print(" | CO2: "); Serial.println(air.co2);
 }
 
-// ================= SEND JSON =================
+// ================= SEND JSON (Memory Optimized) =================
 void sendESP() {
-  String payload = "{";
+  char buf[256]; 
+  char tStr[10], phStr[10], tdsStr[10];
   
-  // Water Data
-  payload += "\"turbidity\":" + String(g_turbidity, 1) + ",";
-  payload += "\"ph\":"        + String(g_ph, 2) + ",";
-  payload += "\"tds\":"       + String(g_tds, 1) + ",";
+  dtostrf(g_turbidity, 1, 1, tStr);
+  dtostrf(g_ph, 1, 2, phStr);
+  dtostrf(g_tds, 1, 1, tdsStr);
 
-  // Air Data
   if (air.valid) {
-    payload += "\"pm1\":"      + String(air.pm1) + ",";
-    payload += "\"pm25\":"     + String(air.pm25) + ",";
-    payload += "\"pm10\":"     + String(air.pm10) + ",";
-    payload += "\"co2\":"      + String(air.co2) + ",";
-    payload += "\"voc\":"      + String(air.voc) + ",";
-    payload += "\"temp\":"     + String(air.temp, 1) + ",";
-    payload += "\"humidity\":" + String(air.hum, 1) + ",";
-    payload += "\"ch2o\":"     + String(air.ch2o, 3) + ",";
-    payload += "\"co\":"       + String(air.co, 1) + ",";
-    payload += "\"o3\":"       + String(air.o3, 2) + ",";
-    payload += "\"no2\":"      + String(air.no2, 2);
-  } else {
-    // Failsafe: Send zeros if air sensor hasn't reported yet to prevent ESP32 JSON crash
-    payload += "\"pm1\":0,\"pm25\":0,\"pm10\":0,\"co2\":0,\"voc\":0,\"temp\":0.0,\"humidity\":0.0,\"ch2o\":0.0,\"co\":0.0,\"o3\":0.0,\"no2\":0.0";
-  }
-  
-  payload += "}";
+    char tempStr[10], humStr[10], ch2oStr[10], coStr[10], o3Str[10], no2Str[10];
+    
+    dtostrf(air.temp, 1, 1, tempStr);
+    dtostrf(air.hum,  1, 1, humStr);
+    dtostrf(air.ch2o, 1, 3, ch2oStr);
+    dtostrf(air.co,   1, 1, coStr);
+    dtostrf(air.o3,   1, 2, o3Str);
+    dtostrf(air.no2,  1, 2, no2Str);
 
-  EspSerial.println(payload);
+    snprintf(buf, sizeof(buf),
+      "{\"turbidity\":%s,\"ph\":%s,\"tds\":%s,\"pm1\":%d,\"pm25\":%d,\"pm10\":%d,\"co2\":%d,\"voc\":%d,\"temp\":%s,\"humidity\":%s,\"ch2o\":%s,\"co\":%s,\"o3\":%s,\"no2\":%s}",
+      tStr, phStr, tdsStr, air.pm1, air.pm25, air.pm10, air.co2, air.voc, tempStr, humStr, ch2oStr, coStr, o3Str, no2Str
+    );
+  } else {
+    // Failsafe string if air sensor isn't ready
+    snprintf(buf, sizeof(buf),
+      "{\"turbidity\":%s,\"ph\":%s,\"tds\":%s,\"pm1\":0,\"pm25\":0,\"pm10\":0,\"co2\":0,\"voc\":0,\"temp\":0.0,\"humidity\":0.0,\"ch2o\":0.0,\"co\":0.0,\"o3\":0.0,\"no2\":0.0}",
+      tStr, phStr, tdsStr
+    );
+  }
+
+  EspSerial.println(buf);
 }
 
 // ================= SETUP =================
