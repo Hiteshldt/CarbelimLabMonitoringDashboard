@@ -227,9 +227,10 @@
         }
         .chart-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
         .metric-selector {
-            padding: 4px 8px; font-size: 12px; border: 1px solid var(--border-color); border-radius: 6px;
-            background: #f8fafc; color: var(--text-primary); font-weight: 600; outline: none;
+            padding: 6px 12px; font-size: 13px; border: 1px solid var(--border-color); border-radius: 8px;
+            background: #f8fafc; color: var(--text-primary); font-weight: 600; outline: none; cursor: pointer;
         }
+        #historyChart { transition: opacity 0.3s; }
 
         /* Empty State */
         .empty-state {
@@ -330,7 +331,7 @@
         
         <div class="chart-panel">
             <div class="chart-header">
-                <div class="section-title" style="margin:0;"><span class="icon">📈</span> Historical Data (Last 10 Mins)</div>
+                <div class="section-title" style="margin:0;"><span class="icon">📈</span> Historical Data (Last 1 Hour)</div>
                 <select id="chartMetricSelect" class="metric-selector" onchange="renderChart()">
                     </select>
             </div>
@@ -377,7 +378,8 @@
                 { value: 'aqi', label: 'Air Quality Index (AQI)' },
                 { value: 'd1', label: 'Turbidity' },
                 { value: 'd2', label: 'pH Level' },
-                { value: 'd5', label: 'PM 2.5' }
+                { value: 'd5', label: 'PM 2.5' },
+                { value: 'd7', label: 'CO2' }
             ]
         },
         'BTTE1260001': {
@@ -411,7 +413,7 @@
     let reconnectInterval = null;
     
     // --- Historical Data Store ---
-    const MAX_HISTORY_POINTS = 600; 
+    const MAX_HISTORY_POINTS = 1000; 
     let telemetryHistory = {
         'BTTE1250007': [],
         'BTTE1260001': []
@@ -424,11 +426,13 @@
         initChart(); 
         populateChartDropdown();
     };
+    
     function checkSession() {
         const sessionData = localStorage.getItem(SESSION_KEY);
         if (sessionData && JSON.parse(sessionData).expiry > Date.now()) { showDashboard(); return; }
         document.getElementById('loginOverlay').style.display = 'flex';
     }
+    
     function attemptLogin() {
         if (document.getElementById('loginUser').value === 'CarbelimLab' && document.getElementById('loginPass').value === 'CarbelimLab123') {
             document.getElementById('loginError').style.display = 'none';
@@ -436,7 +440,9 @@
             showDashboard();
         } else { document.getElementById('loginError').style.display = 'block'; }
     }
+    
     document.getElementById('loginPass').addEventListener('keypress', e => { if (e.key === 'Enter') attemptLogin(); });
+    
     function logout() {
         localStorage.removeItem(SESSION_KEY);
         if (ws) { ws.onclose = null; ws.close(); ws = null; }
@@ -444,6 +450,43 @@
         document.getElementById('mainDashboard').style.display = 'none';
         document.getElementById('loginOverlay').style.display = 'flex';
         document.getElementById('loginPass').value = '';
+    }
+
+    // --- Data Fetching (API Integration) ---
+    async function fetchHistoricalData(deviceId) {
+        try {
+            if (chartInstance) document.getElementById('historyChart').style.opacity = '0.3';
+            
+            let res = await fetch(`https://vtg0j85nv4.execute-api.us-east-1.amazonaws.com/device/${deviceId}/graph/hour`);
+            if (res.ok) {
+                let json = await res.json();
+                if (json && json.data) {
+                    let config = DEVICE_CONFIGS[deviceId];
+                    telemetryHistory[deviceId] = json.data.map(item => {
+                        let timeStr = item.date ? item.date.split(',')[1] : '';
+                        let aqi = null;
+                        if(config.hasAQI) {
+                            let pm25Scale = config.sensors['d5'] ? config.sensors['d5'].scale : 1;
+                            let pm10Scale = config.sensors['d6'] ? config.sensors['d6'].scale : 1;
+                            let pm25 = item['d5'] ? Number(item['d5']) / pm25Scale : 0;
+                            let pm10 = item['d6'] ? Number(item['d6']) / pm10Scale : 0;
+                            aqi = calculateAQI(pm25, pm10);
+                        }
+                        return { time: timeStr, raw: item, aqi: aqi };
+                    });
+                    
+                    // Sort chronologically by timestamp if available
+                    telemetryHistory[deviceId].sort((a, b) => a.raw.ts - b.raw.ts);
+                }
+            }
+        } catch (e) {
+            console.error(`Failed to load historical API data for ${deviceId}:`, e);
+        } finally {
+            if (ACTIVE_DEVICE === deviceId) {
+                renderChart();
+                document.getElementById('historyChart').style.opacity = '1';
+            }
+        }
     }
 
     // --- Device Switching ---
@@ -473,20 +516,19 @@
         document.getElementById('waterGrid').innerHTML = '';
         document.getElementById('airGrid').innerHTML = '';
         
-        // Update Chart Dropdown
+        // Fetch historical data for the newly selected device
+        fetchHistoricalData(ACTIVE_DEVICE);
         populateChartDropdown();
 
         // Show loading state while waiting for new socket data
         container.style.display = 'none';
         document.getElementById('loadingState').style.display = 'block';
-        document.getElementById('loadingText').textContent = `Waiting for first telemetry packet from ${ACTIVE_DEVICE}...`;
+        document.getElementById('loadingText').textContent = `Waiting for live telemetry packet from ${ACTIVE_DEVICE}...`;
 
         // Send subscription change to active websocket
         if (ws && ws.readyState === WebSocket.OPEN) {
             ws.send(JSON.stringify({ action: 'subscribe', deviceId: ACTIVE_DEVICE }));
         }
-        
-        renderChart(); 
     }
 
     function populateChartDropdown() {
@@ -505,8 +547,11 @@
         document.getElementById('loginOverlay').style.display = 'none';
         document.getElementById('mainDashboard').style.display = 'block';
         document.getElementById('appTitle').textContent = DEVICE_CONFIGS[ACTIVE_DEVICE].name;
+        
+        fetchHistoricalData(ACTIVE_DEVICE);
         connectWebSocket();
     }
+    
     function connectWebSocket() {
         if (ws && ws.readyState === WebSocket.OPEN) return;
         ws = new WebSocket(WS_URL);
@@ -529,6 +574,7 @@
             } catch(err) {}
         };
     }
+    
     function updateStatus(text, state) {
         document.getElementById('statusText').textContent = text;
         document.getElementById('statusPill').className = `status-pill ${state}`;
@@ -561,7 +607,7 @@
         return { text: 'Hazardous', color: '#9f1239', bg: '#fff1f2', border: '#fecdd3' }; 
     }
 
-    // --- Data Processing & Charting ---
+    // --- Live Processing & Chart Engine ---
     function processIncomingData(data) {
         let config = DEVICE_CONFIGS[ACTIVE_DEVICE];
         let aqi = null;
@@ -574,8 +620,9 @@
             aqi = calculateAQI(pm25, pm10);
         }
 
-        let timestamp = new Date().toLocaleTimeString('en-US', { hour12: false, hour: "numeric", minute: "numeric", second: "numeric" });
-        telemetryHistory[ACTIVE_DEVICE].push({ time: timestamp, raw: data, aqi: aqi });
+        let timeStr = data.date ? data.date.split(',')[1] : new Date().toLocaleTimeString('en-US', { hour12: false, hour: "numeric", minute: "numeric", second: "numeric" });
+        
+        telemetryHistory[ACTIVE_DEVICE].push({ time: timeStr, raw: data, aqi: aqi });
         
         if(telemetryHistory[ACTIVE_DEVICE].length > MAX_HISTORY_POINTS) {
             telemetryHistory[ACTIVE_DEVICE].shift();
@@ -596,8 +643,8 @@
                 animation: false,
                 plugins: { legend: { display: false } },
                 scales: {
-                    x: { grid: { display: false }, ticks: { maxTicksLimit: 10, font: {family: "'JetBrains Mono', monospace", size: 10} } },
-                    y: { beginAtZero: true, grid: { color: '#e2e8f0' }, ticks: { font: {family: "'JetBrains Mono', monospace", size: 11} } }
+                    x: { grid: { display: false }, ticks: { maxTicksLimit: 12, font: {family: "'JetBrains Mono', monospace", size: 10} } },
+                    y: { beginAtZero: false, grid: { color: '#e2e8f0' }, ticks: { font: {family: "'JetBrains Mono', monospace", size: 11} } }
                 }
             }
         });
@@ -614,7 +661,7 @@
             if (selectedMetric === 'aqi') return d.aqi;
             let val = Number(d.raw[selectedMetric]);
             let scale = config.sensors[selectedMetric] ? config.sensors[selectedMetric].scale : 1;
-            return isNaN(val) ? 0 : parseFloat((val / scale).toFixed(3));
+            return isNaN(val) ? null : parseFloat((val / scale).toFixed(3));
         });
 
         chartInstance.data.labels = labels;
